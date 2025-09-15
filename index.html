@@ -18,6 +18,7 @@
                 <li><a href="#campanhas">Campanhas</a></li>
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#contato">Contato</a></li>
+                <li id="auth-menu"><a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a></li>
             </ul>
         </nav>
     </header>
@@ -94,5 +95,27 @@
             nav.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', false);
         });
+    });
+
+    // Exibe/oculta opções de autenticação conforme login
+    function updateAuthMenu() {
+        const token = localStorage.getItem('rpghub_token');
+        const authMenu = document.getElementById('auth-menu');
+        if (authMenu) {
+            if (token) {
+                authMenu.innerHTML = '<a href="#" id="logout-link">Sair</a>';
+            } else {
+                authMenu.innerHTML = '<a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a>';
+            }
+        }
+    }
+    updateAuthMenu();
+    // Logout
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'logout-link') {
+            localStorage.removeItem('rpghub_token');
+            updateAuthMenu();
+            window.location.href = 'index.html';
+        }
     });
     </script>
