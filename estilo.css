@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --color-primary: #4f46e5;
+    --color-secondary: #6366f1;
+    --color-accent: #7c3aed;
+    --color-bg: #f3f4f6;
+    --color-card-bg: #fff;
+    --color-text: #1e293b;
+    --color-footer: #312e81;
+    --shadow-card: 0 4px 16px rgba(79,70,229,0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.08);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    animation: fadeInDown 0.8s;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--color-bg);
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h2 {
+    color: var(--color-primary);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.card {
+    background: var(--color-card-bg);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+    padding: 2rem 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: cardPop 0.7s;
+}
+
+@keyframes cardPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(124,58,237,0.15);
+}
+
+.card h3 {
+    color: var(--color-secondary);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.card a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.card a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+form {
+    background: var(--color-card-bg);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    animation: fadeIn 1.2s;
+}
+
+label {
+    font-weight: 600;
+    color: var(--color-secondary);
+}
+
+input, textarea {
+    padding: 0.8rem;
+    border: 1px solid var(--color-secondary);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--color-accent);
+    outline: none;
+}
+
+button {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.08);
+}
+
+button:hover {
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+    transform: scale(1.05);
+}
+
+footer {
+    background: var(--color-footer);
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+    font-size: 1rem;
+    margin-top: 3rem;
+    letter-spacing: 1px;
+    animation: fadeInUp 1s;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile-first adjustments */
+@media (max-width: 700px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        background: rgba(79,70,229,0.95);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 180px;
+        padding: 1rem;
+        border-radius: 0 0 0.5rem 0.5rem;
+        box-shadow: 0 4px 16px rgba(79,70,229,0.12);
+        display: none; /* Para menu mobile toggle */
+    }
+    nav.active ul {
+        display: flex;
+    }
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+    main {
+        padding: 0 0.5rem;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+    form {
+        padding: 1rem;
+    }
+}
