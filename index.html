@@ -118,4 +118,35 @@
             window.location.href = 'index.html';
         }
     });
+
+    // Protege acesso às seções de sistemas/campanhas
+    function protectSections() {
+        const token = localStorage.getItem('rpghub_token');
+        // Dados de exemplo dos sistemas/campanhas publicados
+        const sistemasPublicados = [
+            { titulo: 'Fantasia Épica' },
+            { titulo: 'Cyberpunk 2077' }
+        ];
+        const campanhasPublicadas = [
+            { titulo: 'A Maldição do Dragão' },
+            { titulo: 'O Último Refúgio' }
+        ];
+        // IDs das seções protegidas
+        const protectedSections = [
+            { id: 'sistemas', title: 'Sistemas de RPG', items: sistemasPublicados },
+            { id: 'campanhas', title: 'Campanhas de RPG', items: campanhasPublicadas }
+        ];
+        protectedSections.forEach(obj => {
+            const section = document.getElementById(obj.id);
+            if (section && !token) {
+                let html = `<h2>${obj.title}</h2><div class=\"grid\">`;
+                obj.items.forEach(item => {
+                    html += `<article class=\"card\"><h3>${item.titulo}</h3><a href='login.html' style='color:#7c3aed;font-weight:600;font-size:1.05rem;text-decoration:underline;cursor:pointer;'>Cadastre-se para visualizar mais</a></article>`;
+                });
+                html += '</div>';
+                section.innerHTML = html;
+            }
+        });
+    }
+    protectSections();
     </script>
