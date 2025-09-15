@@ -8,8 +8,11 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav id="navbar">
             <a href="#" class="logo">RPG Hub</a>
+            <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span class="hamburger"><span></span></span>
+            </button>
             <ul>
                 <li><a href="#sistemas">Sistemas</a></li>
                 <li><a href="#campanhas">Campanhas</a></li>
@@ -72,6 +75,24 @@
     </main>
     <footer>
         <p>&copy; 2025 RPG Hub. Todos os direitos reservados.</p>
+    <footer>
+        <p>&copy; 2025 RPG Hub. Todos os direitos reservados.</p>
     </footer>
-</body>
-</html>
+    <script>
+    // Menu mobile toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('navbar');
+    const navList = nav.querySelector('ul');
+    menuToggle.addEventListener('click', function() {
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', !expanded);
+        nav.classList.toggle('active');
+    });
+    // Fecha o menu ao clicar em um link (mobile)
+    navList.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', false);
+        });
+    });
+    </script>
