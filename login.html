@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RPG Hub</title>
+    <title>Login - Taverna da Dragonesa</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <main>
         <section>
-            <h2>Entrar no RPG Hub</h2>
+            <h2>Entrar na Taverna da Dragonesa</h2>
             <form id="login-form">
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required autocomplete="username">
@@ -22,7 +22,7 @@
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 RPG Hub. Todos os direitos reservados.</p>
+    <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
     <footer>
         <p>&copy; 2025 RPG Hub. Todos os direitos reservados.</p>
     </footer>
@@ -54,8 +54,8 @@
             if (response.ok && data.success) {
                 // Salva token/localStorage se necessário
                 localStorage.setItem('rpghub_token', data.token);
-                // Redireciona para página inicial
-                window.location.href = 'index.html';
+                // Redireciona para página de perfil
+                window.location.href = 'perfil.html';
             } else {
                 errorDiv.textContent = data.message || 'E-mail ou senha inválidos.';
             }

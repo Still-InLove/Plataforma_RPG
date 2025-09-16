@@ -79,11 +79,13 @@ main {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
+    padding-top: 4.5rem; /* Espaço para o header fixo */
 }
 
 section {
     margin-bottom: 2.5rem;
     animation: fadeIn 1s;
+    scroll-margin-top: 5rem;
 }
 
 @keyframes fadeIn {
@@ -236,7 +238,8 @@ footer {
         font-size: 1.5rem;
     }
     main {
-        padding: 0 0.5rem;
+        padding: 0.5rem;
+        padding-top: 5.5rem; /* Espaço extra para header mobile */
     }
     .grid {
         grid-template-columns: 1fr;
@@ -252,13 +255,19 @@ footer {
     background: none;
     border: none;
     cursor: pointer;
-    display: flex;
+    display: none !important;
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
     margin-left: auto;
     z-index: 101;
 }
+    .menu-toggle {
+        display: flex !important;
+    }
+    .menu-toggle {
+        display: flex;
+    }
 .hamburger {
     display: inline-block;
     width: 28px;
