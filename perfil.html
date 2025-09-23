@@ -10,6 +10,9 @@
     <header>
         <nav id="navbar">
             <a href="index.html" class="logo">Taverna da Dragonesa</a>
+            <button class="menu-toggle">
+                <span class="hamburger"></span>
+            </button>
             <ul>
                 <li><a href="index.html#sistemas">Sistemas</a></li>
                 <li><a href="index.html#campanhas">Campanhas</a></li>
@@ -47,7 +50,7 @@
         <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
     </footer>
     <script>
-    function fazerLogout() {
+        function fazerLogout() {
         localStorage.removeItem('rpghub_token');
         localStorage.removeItem('usuario_nome');
         localStorage.removeItem('usuario_email');
@@ -55,6 +58,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', async function() {
+        // Lógica para o menu de autenticação
         const authMenu = document.getElementById('auth-menu');
         const token = localStorage.getItem('rpghub_token');
         const nomeUsuario = localStorage.getItem('usuario_nome');
@@ -102,6 +106,22 @@
         } catch (err) {
             window.location.href = 'login.html';
         }
+
+        const nav = document.querySelector('nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
     });
     </script>
 </body>

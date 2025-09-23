@@ -10,6 +10,10 @@
     <header>
         <nav>
             <a href="#" class="logo">Taverna da Dragonesa</a>
+            <button class="menu-toggle">
+        <span class="hamburger"></span>
+    </button>
+    <ul>
             <ul>
                 <li><a href="#sistemas">Sistemas</a></li>
                 <li><a href="#campanhas">Campanhas</a></li>
@@ -66,54 +70,71 @@
     </footer>
 
     <script>
-        function fazerLogout() {
-            localStorage.removeItem('rpghub_token');
-            localStorage.removeItem('usuario_nome');
-            localStorage.removeItem('usuario_email');
-            window.location.href = 'index.html';
+    function fazerLogout() {
+        localStorage.removeItem('rpghub_token');
+        localStorage.removeItem('usuario_nome');
+        localStorage.removeItem('usuario_email');
+        window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        const authMenu = document.getElementById('auth-menu');
+        const token = localStorage.getItem('rpghub_token');
+        const nomeUsuario = localStorage.getItem('usuario_nome');
+
+        if (token && nomeUsuario) {
+            authMenu.innerHTML = `
+                <div class="user-profile-menu">
+                    <a href="perfil.html" class="profile-link">
+                        <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
+                    </a>
+                    <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
+                </div>
+            `;
         }
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            const authMenu = document.getElementById('auth-menu');
-            const token = localStorage.getItem('rpghub_token');
-            const nomeUsuario = localStorage.getItem('usuario_nome');
+        const grid = document.getElementById('publicacoes-grid');
 
-            if (token && nomeUsuario) {
-                authMenu.innerHTML = `
-                    <div class="user-profile-menu">
-                        <a href="perfil.html" class="profile-link">
-                            <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
-                        </a>
-                        <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
-                    </div>
-                `;
+        try {
+            const response = await fetch('listar_publicacoes.php');
+            const data = await response.json();
+
+            if (data.success && data.publicacoes.length > 0) {
+                data.publicacoes.forEach(publicacao => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${publicacao.titulo}</h3>
+                        <span style='color:#6366f1;font-weight:600;'>${publicacao.tipo}</span>
+                        <p>${publicacao.descricao}</p>
+                        <p style="margin-top: 1rem;">Autor: ${publicacao.autor_nome}</p>
+                    `;
+                    grid.appendChild(card);
+                });
+            } else {
+                grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Nenhuma publicação encontrada.</p>';
             }
+        } catch (err) {
+            grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Erro ao carregar publicações.</p>';
+        }
 
-            const grid = document.getElementById('publicacoes-grid');
+        const nav = document.querySelector('nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelectorAll('nav ul li a');
 
-            try {
-                const response = await fetch('listar_publicacoes.php');
-                const data = await response.json();
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+        }
 
-                if (data.success && data.publicacoes.length > 0) {
-                    data.publicacoes.forEach(publicacao => {
-                        const card = document.createElement('article');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <h3>${publicacao.titulo}</h3>
-                            <span style='color:#6366f1;font-weight:600;'>${publicacao.tipo}</span>
-                            <p>${publicacao.descricao}</p>
-                            <p style="margin-top: 1rem;">Autor: ${publicacao.autor_nome}</p>
-                        `;
-                        grid.appendChild(card);
-                    });
-                } else {
-                    grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Nenhuma publicação encontrada.</p>';
-                }
-            } catch (err) {
-                grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Erro ao carregar publicações.</p>';
-            }
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
