@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - Taverna da Dragonesa</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="estilo.css?v=1.1">
 </head>
 <body>
     <header>
         <nav id="navbar">
-            <a href="#" class="logo">Taverna da Dragonesa</a>
+            <a href="index.html" class="logo">Taverna da Dragonesa</a>
             <ul>
                 <li><a href="index.html#sistemas">Sistemas</a></li>
                 <li><a href="index.html#campanhas">Campanhas</a></li>
                 <li><a href="index.html#sobre">Sobre</a></li>
                 <li><a href="index.html#contato">Contato</a></li>
-                <li id="auth-menu"><a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a></li>
+                <li id="auth-menu">
+                    <a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -27,41 +29,76 @@
                 <p id="email"></p>
             </div>
         </section>
+        
+        <section>
+            <h2>O que você quer compartilhar hoje?</h2>
+            <div style="text-align:center; margin-top: 1rem;">
+                <a href="publicar.html" class="button">Publicar Novo Conteúdo</a>
+            </div>
+        </section>
+
         <section>
             <h2>Minhas Publicações</h2>
             <div class="grid" id="publicacoes-grid">
-                <!-- Publicações do usuário serão exibidas aqui -->
-            </div>
+                </div>
         </section>
     </main>
     <footer>
         <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
     </footer>
     <script>
-    // Verificação de autenticação e busca de dados do usuário
+    function fazerLogout() {
+        localStorage.removeItem('rpghub_token');
+        localStorage.removeItem('usuario_nome');
+        localStorage.removeItem('usuario_email');
+        window.location.href = 'index.html';
+    }
+
     document.addEventListener('DOMContentLoaded', async function() {
+        const authMenu = document.getElementById('auth-menu');
         const token = localStorage.getItem('rpghub_token');
+        const nomeUsuario = localStorage.getItem('usuario_nome');
+
+        if (token && nomeUsuario) {
+            authMenu.innerHTML = `
+                <div class="user-profile-menu">
+                    <a href="perfil.html" class="profile-link">
+                        <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
+                    </a>
+                    <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
+                </div>
+            `;
+        }
+
         if (!token) {
             window.location.href = 'login.html';
             return;
         }
-        // Exemplo de requisição ao backend para buscar dados do usuário autenticado
+
         try {
-            const response = await fetch('/api/perfil', {
+            const response = await fetch('perfil.php', {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            if (!response.ok) throw new Error('Não autorizado');
-            const usuario = await response.json();
-            document.getElementById('username').textContent = usuario.nome;
-            document.getElementById('email').textContent = usuario.email;
+
+            const data = await response.json();
+
+            if (!data.success) throw new Error(data.message || 'Não autorizado');
+
+            document.getElementById('username').textContent = data.usuario.nome;
+            document.getElementById('email').textContent = data.usuario.email;
+
             const grid = document.getElementById('publicacoes-grid');
-            usuario.publicacoes.forEach(pub => {
-                const card = document.createElement('article');
-                card.className = 'card';
-                card.innerHTML = `<h3>${pub.titulo}</h3><span style='color:#6366f1;font-weight:600;'>${pub.tipo}</span><p>${pub.descricao}</p>`;
-                grid.appendChild(card);
-            });
+            if (data.publicacoes.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#7c3aed;">Nenhuma publicação encontrada.</p>';
+            } else {
+                data.publicacoes.forEach(pub => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `<h3>${pub.titulo}</h3><span style='color:#6366f1;font-weight:600;'>${pub.tipo}</span><p>${pub.descricao}</p>`;
+                    grid.appendChild(card);
+                });
+            }
         } catch (err) {
             window.location.href = 'login.html';
         }

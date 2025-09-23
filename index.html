@@ -3,64 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taverna da Dragonesa - Compartilhe Sistemas e Campanhas</title>
-    <link rel="stylesheet" href="estilo.css">
+    <title>Taverna da Dragonesa</title>
+    <link rel="stylesheet" href="estilo.css?v=1.1">
 </head>
 <body>
     <header>
-        <nav id="navbar">
+        <nav>
             <a href="#" class="logo">Taverna da Dragonesa</a>
-            <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-                <span class="hamburger"><span></span></span>
-            </button>
             <ul>
                 <li><a href="#sistemas">Sistemas</a></li>
                 <li><a href="#campanhas">Campanhas</a></li>
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#contato">Contato</a></li>
-                <li id="auth-menu"><a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a></li>
+                <li id="auth-menu">
+                    <a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a>
+                </li>
             </ul>
         </nav>
     </header>
+
     <main>
         <section id="sistemas">
-            <h2>Sistemas de RPG</h2>
-            <p>Explore sistemas criados pela comunidade ou compartilhe o seu próprio!</p>
-            <div class="grid">
-                <!-- Cards de sistemas de exemplo -->
-                <article class="card">
-                    <h3>Fantasia Épica</h3>
-                    <p>Um sistema completo para aventuras medievais.</p>
-                    <a href="#">Ver detalhes</a>
-                </article>
-                <article class="card">
-                    <h3>Cyberpunk 2077</h3>
-                    <p>Regras para campanhas futuristas e tecnológicas.</p>
-                    <a href="#">Ver detalhes</a>
-                </article>
-            </div>
+            <h2>Sistemas e Campanhas</h2>
+            <div class="grid" id="publicacoes-grid">
+                </div>
         </section>
-        <section id="campanhas">
-            <h2>Campanhas de RPG</h2>
-            <p>Descubra campanhas prontas ou publique suas próprias histórias.</p>
-            <div class="grid">
-                <!-- Cards de campanhas de exemplo -->
-                <article class="card">
-                    <h3>A Maldição do Dragão</h3>
-                    <p>Uma campanha cheia de mistérios e desafios.</p>
-                    <a href="#">Ver detalhes</a>
-                </article>
-                <article class="card">
-                    <h3>O Último Refúgio</h3>
-                    <p>Sobrevivência em um mundo pós-apocalíptico.</p>
-                    <a href="#">Ver detalhes</a>
-                </article>
-            </div>
-        </section>
+
         <section id="sobre">
-            <h2>Sobre o RPG Hub</h2>
-            <p>O RPG Hub é uma plataforma colaborativa para fãs de RPG compartilharem sistemas e campanhas.</p>
+            <h2>Sobre a Taverna</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Missão</h3>
+                    <p>Conectar mestres e jogadores para criar histórias inesquecíveis.</p>
+                </div>
+                <div class="card">
+                    <h3>Visão</h3>
+                    <p>Ser a maior comunidade de RPG do Brasil, facilitando a criação de jogos e a interação entre os membros.</p>
+                </div>
+                <div class="card">
+                    <h3>Valores</h3>
+                    <p>Criatividade, colaboração, respeito e paixão pelo universo do RPG.</p>
+                </div>
+            </div>
         </section>
+
         <section id="contato">
             <h2>Contato</h2>
             <form>
@@ -69,111 +55,65 @@
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" required>
                 <label for="mensagem">Mensagem:</label>
-                <textarea id="mensagem" name="mensagem" required></textarea>
+                <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
                 <button type="submit">Enviar</button>
             </form>
         </section>
     </main>
-    <footer>
-    <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
-    <footer>
-        <p>&copy; 2025 RPG Hub. Todos os direitos reservados.</p>
-    </footer>
-    <script>
-    // Remove menu hamburguer em desktop
-    // Controle do menu hamburguer: remove em desktop, recria em mobile
-    function updateMenuToggle() {
-        const nav = document.getElementById('navbar');
-        let menuToggle = document.querySelector('.menu-toggle');
-        if (window.innerWidth > 700) {
-            if (menuToggle) menuToggle.parentNode.removeChild(menuToggle);
-        } else {
-            if (!menuToggle) {
-                // Cria o botão hamburguer se não existir
-                const btn = document.createElement('button');
-                btn.className = 'menu-toggle';
-                btn.setAttribute('aria-label', 'Abrir menu');
-                btn.setAttribute('aria-expanded', 'false');
-                btn.innerHTML = '<span class="hamburger"><span></span></span>';
-                nav.insertBefore(btn, nav.querySelector('ul'));
-                // Re-adiciona eventos
-                btn.addEventListener('click', function() {
-                    const expanded = btn.getAttribute('aria-expanded') === 'true';
-                    btn.setAttribute('aria-expanded', !expanded);
-                    nav.classList.toggle('active');
-                });
-            }
-        }
-    }
-    updateMenuToggle();
-    window.addEventListener('resize', updateMenuToggle);
-    // Menu mobile toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.getElementById('navbar');
-    const navList = nav.querySelector('ul');
-    menuToggle.addEventListener('click', function() {
-        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !expanded);
-        nav.classList.toggle('active');
-    });
-    // Fecha o menu ao clicar em um link (mobile)
-    navList.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            nav.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', false);
-        });
-    });
 
-    // Exibe/oculta opções de autenticação conforme login
-    function updateAuthMenu() {
-        const token = localStorage.getItem('rpghub_token');
-        const authMenu = document.getElementById('auth-menu');
-        if (authMenu) {
-            if (token) {
-                authMenu.innerHTML = '<a href="#" id="logout-link">Sair</a>';
-            } else {
-                authMenu.innerHTML = '<a href="login.html">Entrar</a> / <a href="cadastro.html">Cadastrar</a>';
-            }
-        }
-    }
-    updateAuthMenu();
-    // Logout
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.id === 'logout-link') {
+    <footer>
+        <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function fazerLogout() {
             localStorage.removeItem('rpghub_token');
-            updateAuthMenu();
+            localStorage.removeItem('usuario_nome');
+            localStorage.removeItem('usuario_email');
             window.location.href = 'index.html';
         }
-    });
 
-    // Protege acesso às seções de sistemas/campanhas
-    function protectSections() {
-        const token = localStorage.getItem('rpghub_token');
-        // Dados de exemplo dos sistemas/campanhas publicados
-        const sistemasPublicados = [
-            { titulo: 'Fantasia Épica' },
-            { titulo: 'Cyberpunk 2077' }
-        ];
-        const campanhasPublicadas = [
-            { titulo: 'A Maldição do Dragão' },
-            { titulo: 'O Último Refúgio' }
-        ];
-        // IDs das seções protegidas
-        const protectedSections = [
-            { id: 'sistemas', title: 'Sistemas de RPG', items: sistemasPublicados },
-            { id: 'campanhas', title: 'Campanhas de RPG', items: campanhasPublicadas }
-        ];
-        protectedSections.forEach(obj => {
-            const section = document.getElementById(obj.id);
-            if (section && !token) {
-                let html = `<h2>${obj.title}</h2><div class=\"grid\">`;
-                obj.items.forEach(item => {
-                    html += `<article class=\"card\"><h3>${item.titulo}</h3><a href='login.html' style='color:#7c3aed;font-weight:600;font-size:1.05rem;text-decoration:underline;cursor:pointer;'>Acessar conteúdo</a></article>`;
-                });
-                html += '</div>';
-                section.innerHTML = html;
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authMenu = document.getElementById('auth-menu');
+            const token = localStorage.getItem('rpghub_token');
+            const nomeUsuario = localStorage.getItem('usuario_nome');
+
+            if (token && nomeUsuario) {
+                authMenu.innerHTML = `
+                    <div class="user-profile-menu">
+                        <a href="perfil.html" class="profile-link">
+                            <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
+                        </a>
+                        <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
+                    </div>
+                `;
+            }
+
+            const grid = document.getElementById('publicacoes-grid');
+
+            try {
+                const response = await fetch('listar_publicacoes.php');
+                const data = await response.json();
+
+                if (data.success && data.publicacoes.length > 0) {
+                    data.publicacoes.forEach(publicacao => {
+                        const card = document.createElement('article');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <h3>${publicacao.titulo}</h3>
+                            <span style='color:#6366f1;font-weight:600;'>${publicacao.tipo}</span>
+                            <p>${publicacao.descricao}</p>
+                            <p style="margin-top: 1rem;">Autor: ${publicacao.autor_nome}</p>
+                        `;
+                        grid.appendChild(card);
+                    });
+                } else {
+                    grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Nenhuma publicação encontrada.</p>';
+                }
+            } catch (err) {
+                grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Erro ao carregar publicações.</p>';
             }
         });
-    }
-    protectSections();
     </script>
+</body>
+</html>

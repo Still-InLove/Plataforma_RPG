@@ -250,7 +250,6 @@ footer {
     }
 }
 
-/* Botão menu hamburguer */
 .menu-toggle {
     background: none;
     border: none;
@@ -296,7 +295,6 @@ footer {
 .hamburger::after {
     top: 18px;
 }
-/* Animação para menu aberto */
 nav.active .hamburger::before {
     transform: translateY(9px) rotate(45deg);
 }

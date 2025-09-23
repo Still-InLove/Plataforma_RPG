@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar - Taverna da Dragonesa</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <main>
+        <section>
+            <h2>Publicar Novo Conteúdo</h2>
+            <form id="publicar-form">
+                <label for="tipo">Tipo de Publicação:</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="sistema">Sistema de RPG</option>
+                    <option value="campanha">Campanha de RPG</option>
+                </select>
+
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" rows="6" required></textarea>
+                
+                <button type="submit">Publicar</button>
+                <div id="publicar-status" style="color:#7c3aed;text-align:center;margin-top:1rem;"></div>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('rpghub_token');
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        document.getElementById('publicar-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const tipo = document.getElementById('tipo').value;
+            const titulo = document.getElementById('titulo').value.trim();
+            const descricao = document.getElementById('descricao').value.trim();
+            const statusDiv = document.getElementById('publicar-status');
+            statusDiv.textContent = 'Publicando...';
+            
+            try {
+                const response = await fetch('publicar.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ tipo, titulo, descricao })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    statusDiv.textContent = 'Publicado com sucesso!';
+                    window.location.href = 'perfil.html';
+                } else {
+                    statusDiv.textContent = data.message || 'Erro ao publicar conteúdo.';
+                }
+            } catch (err) {
+                statusDiv.textContent = 'Erro ao conectar ao servidor.';
+            }
+        });
+    });
+    </script>
+</body>
+</html>
