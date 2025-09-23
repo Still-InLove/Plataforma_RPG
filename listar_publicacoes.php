@@ -8,7 +8,10 @@ header('Content-Type: application/json');
 
 require_once 'db.php';
 
-$stmt = $pdo->query('
+
+$tipo = $_GET['tipo'] ?? null;
+
+$sql = '
     SELECT 
         p.id, 
         p.titulo, 
@@ -18,8 +21,23 @@ $stmt = $pdo->query('
         u.nome AS autor_nome
     FROM publicacoes p
     JOIN usuarios u ON p.usuario_id = u.id
-    ORDER BY p.data_criacao DESC
-');
+';
+
+if ($tipo) {
+    $sql .= ' WHERE p.tipo = :tipo';
+}
+
+$sql .= ' ORDER BY p.data_criacao DESC';
+
+$stmt = $pdo->prepare($sql);
+
+
+if ($tipo) {
+    $stmt->bindValue(':tipo', $tipo);
+}
+
+
+$stmt->execute();
 
 $publicacoes = [];
 while ($row = $stmt->fetch()) {
@@ -27,4 +45,3 @@ while ($row = $stmt->fetch()) {
 }
 
 echo json_encode(['success' => true, 'publicacoes' => $publicacoes]);
-?>

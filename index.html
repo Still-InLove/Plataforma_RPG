@@ -26,50 +26,56 @@
         </nav>
     </header>
 
-    <main>
-        <section id="sistemas">
-            <h2>Sistemas e Campanhas</h2>
-            <div class="grid" id="publicacoes-grid">
-                </div>
-        </section>
+   <main>
+    <section id="sistemas">
+        <h2>Sistemas de RPG</h2>
+        <div class="grid" id="sistemas-grid">
+        </div>
+    </section>
 
-        <section id="sobre">
-            <h2>Sobre a Taverna</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Missão</h3>
-                    <p>Conectar mestres e jogadores para criar histórias inesquecíveis.</p>
-                </div>
-                <div class="card">
-                    <h3>Visão</h3>
-                    <p>Ser a maior comunidade de RPG do Brasil, facilitando a criação de jogos e a interação entre os membros.</p>
-                </div>
-                <div class="card">
-                    <h3>Valores</h3>
-                    <p>Criatividade, colaboração, respeito e paixão pelo universo do RPG.</p>
-                </div>
+    <section id="campanhas">
+        <h2>Campanhas de RPG</h2>
+        <div class="grid" id="campanhas-grid">
+        </div>
+    </section>
+
+    <section id="sobre">
+        <h2>Sobre a Taverna</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Missão</h3>
+                <p>Conectar mestres e jogadores para criar histórias inesquecíveis.</p>
             </div>
-        </section>
+            <div class="card">
+                <h3>Visão</h3>
+                <p>Ser a maior comunidade de RPG do Brasil, facilitando a criação de jogos e a interação entre os membros.</p>
+            </div>
+            <div class="card">
+                <h3>Valores</h3>
+                <p>Criatividade, colaboração, respeito e paixão pelo universo do RPG.</p>
+            </div>
+        </div>
+    </section>
 
-        <section id="contato">
-            <h2>Contato</h2>
-            <form>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="mensagem">Mensagem:</label>
-                <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
-                <button type="submit">Enviar</button>
-            </form>
-        </section>
-    </main>
+    <section id="contato">
+        <h2>Contato</h2>
+        <form>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="mensagem">Mensagem:</label>
+            <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+</main>
 
     <footer>
         <p>&copy; 2025 Taverna da Dragonesa. Todos os direitos reservados.</p>
     </footer>
 
-    <script>
+<script>
     function fazerLogout() {
         localStorage.removeItem('rpghub_token');
         localStorage.removeItem('usuario_nome');
@@ -77,29 +83,17 @@
         window.location.href = 'index.html';
     }
 
-    document.addEventListener('DOMContentLoaded', async function() {
-        const authMenu = document.getElementById('auth-menu');
-        const token = localStorage.getItem('rpghub_token');
-        const nomeUsuario = localStorage.getItem('usuario_nome');
 
-        if (token && nomeUsuario) {
-            authMenu.innerHTML = `
-                <div class="user-profile-menu">
-                    <a href="perfil.html" class="profile-link">
-                        <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
-                    </a>
-                    <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
-                </div>
-            `;
-        }
-
-        const grid = document.getElementById('publicacoes-grid');
+    async function carregarPublicacoes(tipo, gridId) {
+        const grid = document.getElementById(gridId);
+        grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Carregando...</p>';
 
         try {
-            const response = await fetch('listar_publicacoes.php');
+            const response = await fetch(`listar_publicacoes.php?tipo=${tipo}`);
             const data = await response.json();
 
             if (data.success && data.publicacoes.length > 0) {
+                grid.innerHTML = ''; // Limpa a mensagem de carregamento
                 data.publicacoes.forEach(publicacao => {
                     const card = document.createElement('article');
                     card.className = 'card';
@@ -117,6 +111,29 @@
         } catch (err) {
             grid.innerHTML = '<p style="text-align:center; color:#7c3aed;">Erro ao carregar publicações.</p>';
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Lógica do menu de autenticação
+        const authMenu = document.getElementById('auth-menu');
+        const token = localStorage.getItem('rpghub_token');
+        const nomeUsuario = localStorage.getItem('usuario_nome');
+
+        if (token && nomeUsuario) {
+            authMenu.innerHTML = `
+                <div class="user-profile-menu">
+                    <a href="perfil.html" class="profile-link">
+                        <img src="https://i.pravatar.cc/50?u=${nomeUsuario}" alt="Foto de Perfil" class="profile-pic">
+                    </a>
+                    <a href="#" onclick="fazerLogout()" class="logout-link">Sair</a>
+                </div>
+            `;
+        }
+        
+
+        carregarPublicacoes('sistema', 'sistemas-grid');
+        carregarPublicacoes('campanha', 'campanhas-grid');
+
 
         const nav = document.querySelector('nav');
         const menuToggle = document.querySelector('.menu-toggle');
@@ -127,7 +144,6 @@
                 nav.classList.toggle('active');
             });
         }
-
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 nav.classList.remove('active');
