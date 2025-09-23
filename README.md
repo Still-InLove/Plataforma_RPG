@@ -41,7 +41,7 @@ Uma plataforma web para a comunidade de RPG, permitindo que usuários criem um p
 
 ### Estrutura dos arquivos
 
-    /projeto/
+    /novo_projeto/
     ├── estilo.css
     ├── index.html
     ├── perfil.html
